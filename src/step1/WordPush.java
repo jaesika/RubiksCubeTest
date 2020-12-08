@@ -8,19 +8,16 @@ public class WordPush {
         Scanner scan = new Scanner(System.in);
         String word, direction;
         String count;
-        int countInt = 0;
+        int countInt;
 
         //사용자 입력
         while(true) {
             System.out.print("단어를 하나 입력 > ");
             word = scan.nextLine();
-            if(word.contains(" ")) {
-                System.out.println("단어를 하나만 입력해 주세요.\n");
-                continue;
-            } else if(word.length()==0) {
-                System.out.println("단어 입력이 안되었습니다.\n");
+            if(!validWord(word)) {
                 continue;
             }
+
             System.out.print("-100<=N<100의 정수 하나를 입력 > ");
             count = scan.nextLine();
             try {
@@ -29,17 +26,13 @@ public class WordPush {
                 System.out.println("숫자 입력이 잘못 되었습니다.\n");
                 continue;
             }
-            if(countInt<-100 || 100<=countInt) {
-                System.out.println("-100이상 100미만의 숫자를 입력해 주세요\n");
+            if(!validCount(countInt)) {
                 continue;
             }
 
             System.out.print("R(r) 또는 L(l)을 입력 > ");
             direction = scan.nextLine();
-            if(!(direction.equalsIgnoreCase("L") || direction.equalsIgnoreCase("R"))) {
-                System.out.println("R(r) 또는 L(l) 입력이 잘못 되었습니다.\n");
-                continue;
-            } else {
+            if(validDirection(direction)) {
                 break;
             }
         }
@@ -65,5 +58,33 @@ public class WordPush {
         }
 
         return result.toString();
+    }
+
+    static boolean validDirection(String direction) {
+        if(direction.equalsIgnoreCase("L") || direction.equalsIgnoreCase("R")) {
+            return true;
+        } else {
+            System.out.println("R(r) 또는 L(l) 입력이 잘못되었습니다.\n");
+            return false;
+        }
+    }
+
+    static boolean validCount(int count) {
+        if(count<-100 || 100<=count) {
+            System.out.println("-100 이상 100 미만의 숫자를 입력해 주세요.\n");
+            return false;
+        }
+        return true;
+    }
+
+    static boolean validWord(String word) {
+        if(word.contains(" ")) {
+            System.out.println("단어를 하나만 입력해 주세요.\n");
+            return false;
+        } else if(word.length()==0) {
+            System.out.println("단어 입력이 안 되었습니다.\n");
+            return false;
+        }
+        return true;
     }
 }
