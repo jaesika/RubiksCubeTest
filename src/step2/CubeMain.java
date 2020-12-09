@@ -6,8 +6,10 @@ public class CubeMain {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
+        Cube cube = new Cube();
         String input;
 
+        cube.printCube();
         while (true) {
             System.out.print("CUBE> ");
             input = scan.nextLine();
@@ -16,6 +18,7 @@ public class CubeMain {
             } else if (isClose(input)) {
                 break;
             }
+            cube.execute(input);
         }
 
         scan.close();
