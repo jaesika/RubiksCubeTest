@@ -13,6 +13,7 @@ public class CubeMain {
         while (true) {
             System.out.print("CUBE> ");
             input = scan.nextLine();
+            System.out.println();
             if (!validInput(input)) {
                 continue;
             } else if (isClose(input)) {
