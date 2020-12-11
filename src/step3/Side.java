@@ -21,9 +21,22 @@ public class Side {
 
     // 한 면의 한 줄을 출력
     public void oneLinePrint(int i) {
-        for (char[] chars : side) {
-            System.out.print(chars[i] + " ");
+        for (char[] line : side) {
+            System.out.print(line[i] + " ");
         }
         System.out.print("\t");
+    }
+
+    // 한 면을 출력
+    public void oneSidePrint() {
+        System.out.println("");
+        for (char[] line : side) {
+            System.out.print("\t\t\t");
+            for (char one : line) {
+                System.out.print(one+ " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
