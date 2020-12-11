@@ -39,4 +39,15 @@ public class Side {
         }
         System.out.println();
     }
+
+    // clockWise가 true => 시계방향, false => 반시계방향
+    public void turn(boolean clockWise) {
+        char[][] temp = new char[3][3];
+        for(int i=0; i<side.length; i++) {
+            for(int j=0; j<side[i].length; j++) {
+                temp[i][j] = clockWise ? side[2-j][i] : side[j][2-i];
+            }
+        }
+        side = temp;
+    }
 }
