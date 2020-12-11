@@ -7,6 +7,7 @@ public class RubiksCubeMain {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         String input;
+        RubiksCube rubiksCube = new RubiksCube();
 
         while (true) {
             System.out.print("CUBE> ");
@@ -17,6 +18,7 @@ public class RubiksCubeMain {
             } else if (isClose(input)) {
                 break;
             }
+            rubiksCube.execute(input);
         }
         scan.close();
     }
