@@ -9,7 +9,6 @@ public class RubiksCubeMain {
         Scanner scan = new Scanner(System.in);
         String input;
         RubiksCube rubiksCube = new RubiksCube();
-        System.out.println(start);
 
         while (true) {
             System.out.print("CUBE> ");
@@ -21,7 +20,6 @@ public class RubiksCubeMain {
                 long end = System.currentTimeMillis();
                 int elapsedTime = (int) ((end-start)/1000);
                 isClose(rubiksCube.getCount(), elapsedTime);
-
                 break;
             }
         }
@@ -40,7 +38,7 @@ public class RubiksCubeMain {
                 throw new IllegalStateException();
             }
         } catch (IllegalStateException e) {
-            System.out.println("동작을 다시 입력해주세요. ");
+            System.out.println("잘못된 동작명령 입니다.\n");
             return false;
         }
         return true;

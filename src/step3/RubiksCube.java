@@ -124,7 +124,6 @@ public class RubiksCube {
                 result.append(commands.charAt(commands.length()-1)); // commands.length()-1 => '
             }
         }
-        System.out.println(result.toString());
 
         return result.toString();
     }
