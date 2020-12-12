@@ -5,9 +5,11 @@ import java.util.Scanner;
 public class RubiksCubeMain {
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         Scanner scan = new Scanner(System.in);
         String input;
         RubiksCube rubiksCube = new RubiksCube();
+        System.out.println(start);
 
         while (true) {
             System.out.print("CUBE> ");
@@ -15,20 +17,21 @@ public class RubiksCubeMain {
             System.out.println();
             if (!validInput(input)) {
                 continue;
-            } else if (isClose(input)) {
+            } else if (input.equals("Q") || rubiksCube.execute(input)) {
+                long end = System.currentTimeMillis();
+                int elapsedTime = (int) ((end-start)/1000);
+                isClose(rubiksCube.getCount(), elapsedTime);
+
                 break;
             }
-            rubiksCube.execute(input);
         }
         scan.close();
     }
 
-    private static boolean isClose(String input) {
-        if (input.equals("Q")) {
-            System.out.println("GoodBye~~");
-            return true;
-        }
-        return false;
+    private static void isClose(int count, int elapsedTime) {
+        System.out.printf("경과시간: %02d:%02d\n",elapsedTime/60, elapsedTime%60);
+        System.out.println("조작갯수: " + count);
+        System.out.println("프로그램을 종료합니다");
     }
 
     private static boolean validInput(String actionList) {
