@@ -14,11 +14,11 @@ public class Side {
         this.side = newSide;
     }
 
-    public char getSide(int i, int j) {
+    public char getSquare(int i, int j) {
         return side[i][j];
     }
 
-    public void setSide(int i, int j, char color) {
+    public void setSquare(int i, int j, char color) {
         this.side[i][j] = color;
     }
 
@@ -78,5 +78,16 @@ public class Side {
             }
         }
         side = temp;
+    }
+
+    public boolean isAnswer() {
+        char color = side[0][0];
+        boolean result = true;
+        for (char[] line : side) {
+            for (char c : line) {
+                if(c!=color) return false;
+            }
+        }
+        return true;
     }
 }

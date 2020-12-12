@@ -6,6 +6,7 @@ public class RubiksCube {
 
     private final Side[] sides;
     private final static String commands = "ULFRBD'";
+    private int count = 0;
 
     public RubiksCube() {
         char[] colors = {'B', 'W', 'O', 'G', 'Y', 'R'};
@@ -15,6 +16,11 @@ public class RubiksCube {
         }
         this.sides = sides;
         print();
+    }
+
+
+    public int getCount() {
+        return count;
     }
 
     // 큐브 상태 출력
@@ -31,8 +37,9 @@ public class RubiksCube {
         sides[5].oneSidePrint(); // 아랫면
     }
 
-    public void execute(String input) {
+    public boolean execute(String input) {
         Side[] preSides = this.sides;
+        boolean result = false;
         if(isNumber(input)) {
             input = randomCommand(input);
             excuteCommand(input, preSides, false);
@@ -40,19 +47,18 @@ public class RubiksCube {
         } else {
             if(!validCommands(input)) {
                 System.out.println("잘못된 동작명령 입니다.\n");
-                return;
+                return result;
             }
-            excuteCommand(input, preSides, true);
+            result = excuteCommand(input, preSides, true);
         }
-
+        return result;
     }
 
-    private void excuteCommand(String input, Side[] preSides, boolean isPrint) {
+    private boolean excuteCommand(String input, Side[] preSides, boolean isPrint) {
         int length = input.length();
 
         for(int i=0; i<length; i++) {
             char command = input.charAt(i);
-
             if(i<length-1 && input.charAt(i+1)=='\'') {
                 if(isPrint) System.out.println("동작 명령: " + command + "'");
                 rotateCube(command+"'", preSides);
@@ -61,8 +67,26 @@ public class RubiksCube {
                 if(isPrint) System.out.println("동작 명령: " + command);
                 rotateCube(command+"", preSides);
             }
+
+            if(isPrint){
+                print();
+                count++;
+            }
+            if(isAnswer(preSides)){
+                return true;
+            }
         }
-        if (isPrint) print();
+        return false;
+    }
+
+    private boolean isAnswer(Side[] preSides) {
+        for (Side side : preSides) {
+            if(!side.isAnswer()) {
+                return false;
+            }
+        }
+        System.out.println("Rubik's Cube Clear!! \t Congraturation~~~♡♡♡♡♡\n");
+        return true;
     }
 
     private boolean validCommands(String input) {
