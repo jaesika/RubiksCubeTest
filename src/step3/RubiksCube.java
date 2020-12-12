@@ -1,8 +1,11 @@
 package step3;
 
+import java.util.Random;
+
 public class RubiksCube {
 
     private final Side[] sides;
+    private final static String commands = "ULFRBD'";
 
     public RubiksCube() {
         char[] colors = {'B', 'W', 'O', 'G', 'Y', 'R'};
@@ -30,17 +33,76 @@ public class RubiksCube {
 
     public void execute(String input) {
         Side[] preSides = this.sides;
+        if(isNumber(input)) {
+            input = randomCommand(input);
+            excuteCommand(input, preSides, false);
+            print();
+        } else {
+            if(!validCommands(input)) {
+                System.out.println("잘못된 동작명령 입니다.\n");
+                return;
+            }
+            excuteCommand(input, preSides, true);
+        }
+
+    }
+
+    private void excuteCommand(String input, Side[] preSides, boolean isPrint) {
         int length = input.length();
 
         for(int i=0; i<length; i++) {
+            char command = input.charAt(i);
+
             if(i<length-1 && input.charAt(i+1)=='\'') {
-                rotateCube(input.charAt(i)+"'", preSides);
+                if(isPrint) System.out.println("동작 명령: " + command + "'");
+                rotateCube(command+"'", preSides);
                 i++;
             } else {
-                rotateCube(input.charAt(i)+"", preSides);
+                if(isPrint) System.out.println("동작 명령: " + command);
+                rotateCube(command+"", preSides);
             }
-            print();
         }
+        if (isPrint) print();
+    }
+
+    private boolean validCommands(String input) {
+        int length = input.length();
+        String commands = RubiksCube.commands;
+
+        for(int i=0; i<length; i++) {
+            if (!commands.contains(input.charAt(i)+"")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isNumber(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    // 랜덤한 명령어를 생성
+    private String randomCommand(String input) {
+        Random random = new Random();
+        int randomCount = Integer.parseInt(input);
+        StringBuilder result = new StringBuilder();
+        String commands = RubiksCube.commands;
+
+        for(int i=0; i<randomCount; i++) {
+            int randomInt = random.nextInt(commands.length()-2); // '를 제외한 나머지 명령어
+            result.append(commands.charAt(randomInt));
+            if(random.nextBoolean()) {
+                result.append(commands.charAt(commands.length()-1)); // commands.length()-1 => '
+            }
+        }
+        System.out.println(result.toString());
+
+        return result.toString();
     }
 
     private void rotateCube(String command, Side[] sides) {
@@ -178,6 +240,7 @@ public class RubiksCube {
         sides[3].setLine(0, false, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+
     }
 }
 
