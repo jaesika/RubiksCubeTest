@@ -97,6 +97,10 @@ public class RubiksCube {
         int length = input.length();
         String commands = RubiksCube.commands;
 
+        if(input.charAt(0) == '\'') {
+            return false;
+        }
+
         for(int i=0; i<length; i++) {
             if (!commands.contains(input.charAt(i)+"")) {
                 return false;
