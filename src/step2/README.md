@@ -87,7 +87,8 @@
 ```
 Cube 클래스의 생성자로 객체가 생성될 시에 위의 값으로 초기화를 시켜준다.
 
-#### 명령어에 대한 처리
+#### 사용자 입력에 대한 파싱 후 분기 처리
+
 * Cube 클래스
 ```java
     private void executeCommands(String input, char[][] preCube) {
@@ -109,8 +110,9 @@ Cube 클래스의 생성자로 객체가 생성될 시에 위의 값으로 초�
     }
 ```
 String 형식으로 들어온 입력에 대하여 뒤에 따옴표가 있는지 체크하고 있으면 따옴표를 붙여 명령어를 실행한다 <br>
+그 후 switch 구문으로 분기처리를 통하여 명령어에 맞는 함수들을 실행하게 된다
 <br>
-
+#### 명령 동작 함수
 ```java
         private void turnUp(char[][] cube, int index) {
             char temp = cube[0][index];
