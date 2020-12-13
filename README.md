@@ -7,3 +7,4 @@
 [2단계 README.md 참조 링크](https://github.com/oopi159/CodesquadTest/tree/master/src/step2)
 
 ## 3단계: 루빅스 큐브 구현하기
+[3단계 README.md 참조 링크](https://github.com/oopi159/CodesquadTest/tree/master/src/step3)
