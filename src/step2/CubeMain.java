@@ -9,7 +9,7 @@ public class CubeMain {
         Cube cube = new Cube();
         String input;
 
-        cube.printCube();
+        cube.print();
         while (true) {
             System.out.print("CUBE> ");
             input = scan.nextLine();

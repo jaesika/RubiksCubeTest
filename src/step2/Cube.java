@@ -1,7 +1,8 @@
 package step2;
 
 public class Cube {
-    private char[][] cubes;
+    private final char[][] cubes;
+    private final static String commands = "URLB'";
 
     public Cube() {
         this.cubes = new char[][]{
@@ -11,92 +12,108 @@ public class Cube {
         };
     }
 
-    public void execute(String commands) {
-        char[][] preCube = this.cubes;
-        int length = commands.length();
+    public void execute(String input) {
+
+        if (!validation(input)) {
+            System.out.println("잘못된 명령입니다.\n");
+            return;
+        }
+
+        executeCommands(input, this.cubes);
+    }
+
+    private void executeCommands(String input, char[][] preCube) {
+        int length = input.length();
 
         for(int i=0; i<length; i++) {
-            System.out.println(commands.charAt(i));
-            if(i<length-1 && commands.charAt(i+1)=='\'') {
-                preCube = pushCube(commands.charAt(i)+"'", preCube);
+            char command = input.charAt(i);
+
+            if(i<length-1 && input.charAt(i+1)=='\'') {
+                System.out.println("동작 명령: " + command + "'");
+                pushCube(command+"'", preCube);
                 i++;
             } else {
-                preCube = pushCube(commands.charAt(i)+"", preCube);
+                System.out.println("동작 명령: " + command);
+                pushCube(command+"", preCube);
             }
-            printCube();
+            print();
         }
-
-
     }
 
-    private char[][] pushCube(String command, char[][] cube) {
-        char[][] result = cube;
+    private boolean validation(String input) {
+        int length = input.length();
+        String commands = Cube.commands;
+
+        for(int i=0; i<length; i++) {
+            if(!commands.contains(input.charAt(i)+"")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void pushCube(String command, char[][] cube) {
         switch (command) {
             case "U":
-                result = LeftAndRight(cube, 0, "L");
+                turnLeft(cube, 0);
                 break;
             case "U'":
-                result = LeftAndRight(cube, 0, "R");
+                turnRight(cube, 0);
                 break;
             case "R":
-                result = UpAndDown(cube, 2, "U");
+                turnUp(cube, 2);
                 break;
             case "R'":
-                result = UpAndDown(cube, 2, "D");
+                turnDown(cube, 2);
                 break;
             case "L":
-                result = UpAndDown(cube, 0, "D");
+                turnDown(cube, 0);
                 break;
             case "L'":
-                result = UpAndDown(cube, 0, "U");
+                turnUp(cube, 0);
                 break;
             case "B":
-                result = LeftAndRight(cube, 2, "R");
+                turnRight(cube, 2);
                 break;
             case "B'":
-                result = LeftAndRight(cube, 2, "L");
+                turnLeft(cube, 2);
                 break;
         }
-        return result;
     }
 
-    private char[][] UpAndDown(char[][] cube, int index, String direction) {
-        char temp;
-        if (direction.contains("U")) {
-            temp = cube[0][index];
-            for(int i=0; i<2; i++) {
-                cube[i][index] = cube[i+1][index];
-            }
-            cube[2][index] = temp;
-        } else if (direction.equals("D")) {
-            temp = cube[2][index];
-            for(int i=2; i>0; i--) {
-                cube[i][index] = cube[i-1][index];
-            }
-            cube[0][index] = temp;
+    private void turnUp(char[][] cube, int index) {
+        char temp = cube[0][index];
+        for (int i=0; i<2; i++) {
+            cube[i][index] = cube[i+1][index];
         }
-        return cube;
+        cube[cube.length-1][index] = temp;
     }
 
-    private char[][] LeftAndRight(char[][] cube, int index, String direction) {
-        char temp;
-        if (direction.equals("L")) {
-            temp = cube[index][0];
-            for(int i=0; i<2; i++) {
-                cube[index][i] = cube[index][i+1];
-            }
-            cube[index][2] = temp;
-        } else if (direction.equals("R")) {
-            temp = cube[index][2];
-            for(int i=2; i>0; i--) {
-                cube[index][i] = cube[index][i-1];
-            }
-            cube[index][0] = temp;
+    private void turnDown(char[][] cube, int index) {
+        char temp = cube[cube.length-1][index];
+        for (int i=2; i>0; i--) {
+            cube[i][index] = cube[i-1][index];
         }
-        return cube;
+        cube[0][index] = temp;
     }
 
-    public void printCube() {
+    private void turnLeft(char[][] cube, int index) {
+        char temp = cube[index][0];
+        for (int i=0; i<2; i++) {
+            cube[index][i] = cube[index][i+1];
+        }
+        cube[index][cube.length-1] = temp;
+    }
+
+    private void turnRight(char[][] cube, int index) {
+        char temp = cube[index][cube.length-1];
+        for (int i=2; i>0; i--) {
+            cube[index][i] = cube[index][i-1];
+        }
+        cube[index][0] = temp;
+    }
+
+    public void print() {
         char[][] cube = this.cubes;
         for (int i = 0; i < cube.length; i++) {
             for (int j = 0; j < cube.length; j++) {
