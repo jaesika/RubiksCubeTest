@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class RubiksCubeMain {
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         Scanner scan = new Scanner(System.in);
         String input;
         RubiksCube rubiksCube = new RubiksCube();
@@ -17,16 +17,17 @@ public class RubiksCubeMain {
             if (!validInput(input)) {
                 continue;
             } else if (input.equals("Q") || rubiksCube.execute(input)) {
-                long end = System.currentTimeMillis();
-                int elapsedTime = (int) ((end-start)/1000);
-                isClose(rubiksCube.getCount(), elapsedTime);
+                isClose(rubiksCube.getCount(), startTime);
                 break;
             }
         }
         scan.close();
     }
 
-    private static void isClose(int count, int elapsedTime) {
+    private static void isClose(int count, long startTime) {
+        long endTime = System.currentTimeMillis();
+        int elapsedTime = (int) ((endTime-startTime)/1000);
+
         System.out.printf("경과시간: %02d:%02d\n",elapsedTime/60, elapsedTime%60);
         System.out.println("조작갯수: " + count);
         System.out.println("프로그램을 종료합니다");
@@ -38,7 +39,7 @@ public class RubiksCubeMain {
                 throw new IllegalStateException();
             }
         } catch (IllegalStateException e) {
-            System.out.println("잘못된 동작명령 입니다.\n");
+            System.out.println("잘못된 동작 명령 입니다.\n");
             return false;
         }
         return true;

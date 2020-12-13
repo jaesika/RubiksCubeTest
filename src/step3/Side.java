@@ -22,33 +22,6 @@ public class Side {
         this.side[i][j] = color;
     }
 
-    public char[] getLine(int index, boolean isRow) {
-        char[] line = new char[3];
-        if(isRow) {
-            for (int i=0; i<side.length; i++) {
-                line[i] = side[index][i];
-            }
-        } else {
-            for (int i=0; i<side.length; i++) {
-                line[i] = side[i][index];
-            }
-        }
-
-        return line;
-    }
-
-    public void setLine(int index, boolean isRow, char[] line) {
-        if(isRow) {
-            for (int i=0; i<side.length; i++) {
-                side[index][i] = line[i];
-            }
-        } else {
-            for (int i=0; i<side.length; i++) {
-                side[i][index] = line[i];
-            }
-        }
-    }
-
     // 한 면의 한 줄을 출력
     public void oneLinePrint(int i) {
         for(int j=0; j<side[i].length; j++) {
@@ -80,7 +53,7 @@ public class Side {
         side = temp;
     }
 
-    public boolean isAnswer() {
+    public boolean isAllRight() {
         char color = side[0][0];
         boolean result = true;
         for (char[] line : side) {

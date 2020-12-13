@@ -18,7 +18,6 @@ public class RubiksCube {
         print();
     }
 
-
     public int getCount() {
         return count;
     }
@@ -38,50 +37,54 @@ public class RubiksCube {
     }
 
     public boolean execute(String input) {
-        Side[] preSides = this.sides;
         boolean result = false;
+
         if(isNumber(input)) {
             input = randomCommand(input);
-            excuteCommand(input, preSides, false);
+            excuteCommand(input, false);
             print();
         } else {
             if(!validCommands(input)) {
                 System.out.println("잘못된 동작명령 입니다.\n");
-                return result;
+                return false;
             }
-            result = excuteCommand(input, preSides, true);
+            result = excuteCommand(input, true);
         }
+
         return result;
     }
 
-    private boolean excuteCommand(String input, Side[] preSides, boolean isPrint) {
+    // 명령어 실행
+    private boolean excuteCommand(String input, boolean isNotRandom) {
+        Side[] preSides = this.sides;
         int length = input.length();
 
         for(int i=0; i<length; i++) {
             char command = input.charAt(i);
+
             if(i<length-1 && input.charAt(i+1)=='\'') {
-                if(isPrint) System.out.println("동작 명령: " + command + "'");
-                rotateCube(command+"'", preSides);
+                if(isNotRandom) System.out.println("동작 명령: " + command + "'");
+                turnCube(command+"'", preSides);
                 i++;
             } else {
-                if(isPrint) System.out.println("동작 명령: " + command);
-                rotateCube(command+"", preSides);
+                if(isNotRandom) System.out.println("동작 명령: " + command);
+                turnCube(command+"", preSides);
             }
 
-            if(isPrint){
+            if(isNotRandom){
                 print();
                 count++;
+                if(isAnswer(preSides)) return true;
             }
-            if(isAnswer(preSides)){
-                return true;
-            }
+
         }
         return false;
     }
 
+    // 정답 체크
     private boolean isAnswer(Side[] preSides) {
         for (Side side : preSides) {
-            if(!side.isAnswer()) {
+            if(!side.isAllRight()) {
                 return false;
             }
         }
@@ -89,6 +92,7 @@ public class RubiksCube {
         return true;
     }
 
+    // 명령어 유효성 확인
     private boolean validCommands(String input) {
         int length = input.length();
         String commands = RubiksCube.commands;
@@ -101,6 +105,7 @@ public class RubiksCube {
         return true;
     }
 
+    // Number 체크
     private boolean isNumber(String input) {
         try {
             Integer.parseInt(input);
@@ -112,9 +117,9 @@ public class RubiksCube {
 
     // 랜덤한 명령어를 생성
     private String randomCommand(String input) {
-        Random random = new Random();
-        int randomCount = Integer.parseInt(input);
         StringBuilder result = new StringBuilder();
+        int randomCount = Integer.parseInt(input);
+        Random random = new Random();
         String commands = RubiksCube.commands;
 
         for(int i=0; i<randomCount; i++) {
@@ -128,7 +133,8 @@ public class RubiksCube {
         return result.toString();
     }
 
-    private void rotateCube(String command, Side[] sides) {
+    // 명령어 분기 처리
+    private void turnCube(String command, Side[] sides) {
         switch (command) {
             case "U":
                 turnU(sides, 0);
@@ -176,13 +182,16 @@ public class RubiksCube {
     }
 
     private void turnB(Side[] sides, int i) {
-        char[] temp = sides[0].getLine(0, true);
-        sides[0].setLine(0, true, sides[3].getLine(2, false));
-        sides[3].setLine(2, false, sides[5].getLine(2, true));
-        sides[5].setLine(2, true, sides[1].getLine(0,false));
-        sides[1].setLine(0, false, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[0].getSquare(0, k);
+            sides[0].setSquare(0, k, sides[3].getSquare(k, 2));
+            sides[3].setSquare(k, 2, sides[5].getSquare(2, k));
+            sides[5].setSquare(2, k, sides[1].getSquare(k, 0));
+            sides[1].setSquare(k, 0, temp);
+        }
     }
 
     private void turnCounterR(Side[] sides, int i) {
@@ -192,13 +201,16 @@ public class RubiksCube {
     }
 
     private void turnR(Side[] sides, int i) {
-        char[] temp = sides[0].getLine(2, false);
-        sides[0].setLine(2, false, sides[2].getLine(2, false));
-        sides[2].setLine(2, false, sides[5].getLine(2, false));
-        sides[5].setLine(2, false, sides[4].getLine(0,false));
-        sides[4].setLine(0, false, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[0].getSquare(k, 2);
+            sides[0].setSquare(k, 2, sides[2].getSquare(k, 2));
+            sides[2].setSquare(k, 2, sides[5].getSquare(k, 2));
+            sides[5].setSquare(k, 2, sides[4].getSquare(k, 0));
+            sides[4].setSquare(k, 0, temp);
+        }
     }
 
     private void turnCounterL(Side[] sides, int i) {
@@ -208,13 +220,16 @@ public class RubiksCube {
     }
 
     private void turnL(Side[] sides, int i) {
-        char[] temp = sides[0].getLine(0, false);
-        sides[0].setLine(0, false, sides[4].getLine(2, false));
-        sides[4].setLine(2, false, sides[5].getLine(0, false));
-        sides[5].setLine(0, false, sides[2].getLine(0,false));
-        sides[2].setLine(0, false, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[0].getSquare(k, 0);
+            sides[0].setSquare(k, 0, sides[4].getSquare(k, 2));
+            sides[4].setSquare(k, 2, sides[5].getSquare(k, 0));
+            sides[5].setSquare(k, 0, sides[2].getSquare(k, 0));
+            sides[2].setSquare(k, 0, temp);
+        }
     }
 
     private void turnCounterD(Side[] sides, int i) {
@@ -224,13 +239,17 @@ public class RubiksCube {
     }
 
     private void turnD(Side[] sides, int i) {
-        char[] temp = sides[1].getLine(2, true);
-        sides[1].setLine(2, true, sides[4].getLine(2, true));
-        sides[4].setLine(2, true, sides[3].getLine(2, true));
-        sides[3].setLine(2, true, sides[2].getLine(2,true));
-        sides[2].setLine(2, true, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[1].getSquare(2, k);
+            sides[1].setSquare(2, k, sides[4].getSquare(2, k));
+            sides[4].setSquare(2, k, sides[3].getSquare(2, k));
+            sides[3].setSquare(2, k, sides[2].getSquare(2, k));
+            sides[2].setSquare(2, k, temp);
+
+        }
     }
 
     private void turnCounterU(Side[] sides, int i) {
@@ -240,13 +259,16 @@ public class RubiksCube {
     }
 
     private void turnU(Side[] sides, int i) {
-        char[] temp = sides[1].getLine(0, true);
-        sides[1].setLine(0, true, sides[2].getLine(0, true));
-        sides[2].setLine(0, true, sides[3].getLine(0, true));
-        sides[3].setLine(0, true, sides[4].getLine(0,true));
-        sides[4].setLine(0, true, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[1].getSquare(0, k);
+            sides[1].setSquare(0, k, sides[2].getSquare(0, k));
+            sides[2].setSquare(0, k, sides[3].getSquare(0, k));
+            sides[3].setSquare(0, k, sides[4].getSquare(0, k));
+            sides[4].setSquare(0, k, temp);
+        }
     }
 
     private void turnCounterF(Side[] sides, int i) {
@@ -256,13 +278,16 @@ public class RubiksCube {
     }
 
     private void turnF(Side[] sides, int i) {
-        char[] temp = sides[0].getLine(2, true);
-        sides[0].setLine(2, true, sides[1].getLine(2, false));
-        sides[1].setLine(2, false, sides[5].getLine(0, true));
-        sides[5].setLine(0, true, sides[3].getLine(0,false));
-        sides[3].setLine(0, false, temp);
         // 한 면을 시계 방향으로 돌림
         sides[i].turn();
+        // 사이드 돌림
+        for (int k=0; k<3; k++) {
+            char temp = sides[0].getSquare(2, k);
+            sides[0].setSquare(2, k, sides[1].getSquare(k, 2));
+            sides[1].setSquare(k, 2, sides[5].getSquare(0, k));
+            sides[5].setSquare(0, k, sides[3].getSquare(k, 0));
+            sides[3].setSquare(k, 0, temp);
+        }
 
     }
 }
