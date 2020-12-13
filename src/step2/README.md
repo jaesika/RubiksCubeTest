@@ -28,16 +28,7 @@
 > Q     : GoodBye~~~를 출력하고 프로그램을 종료한다. <br>
 
 ## 입출력
-> R　W　R <br>
-> G　C　W <br>
-> G　B　B <br>
-> <br>
-> CUBE>　U <br>
-> <br>
-> 동작 명령: U <br>
-> R　W　R <br>
-> G　C　W <br>
-> G　B　B <br>
+![image](https://user-images.githubusercontent.com/50695027/102006149-3332f900-3d62-11eb-89ec-da5fa741d2bd.PNG)
 
 ## 코드 설명
 #### 사용자 입력에 대한 처리
