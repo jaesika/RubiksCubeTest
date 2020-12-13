@@ -21,6 +21,18 @@
     -100<=N<100의 정수값인지 체크
     * boolean validDirection(String direction) <br>
     R 또는 L만 입력했는지 체크
+ ```java
+    private static boolean validDirection(String direction) {
+        if(direction.equalsIgnoreCase("L") || direction.equalsIgnoreCase("R")) {
+            return true;
+        } else {
+            System.out.println("R(r) 또는 L(l) 입력이 잘못되었습니다.\n");
+            return false;
+        }
+    }
+```
+String 클래스의 equalsIgnoreCase를 사용하여 소문자도 포함하여 체크한다.
+    
 
 * 단어 밀어내기
  ```java
@@ -48,5 +60,6 @@
 `R이면서 count가 0이상인 경우`,　`L이면서 count가 음수인 경우`
 * 왼쪽으로 밀어내는 경우 <br>
 `L이면서 count가 0이상인 경우`,　`R이면서 count가 음수인 경우`<br>
+<br>
 오른쪽으로 미는 경우는 뒤에서부터 `index`만큼 앞부분으로 그 나머지를 뒤로하여 return 한다
 왼쪽으로 미는 경우는 앞에서부터 `index`만큼 뒷부분으로 그 나머지를 앞으로하여 return 한다
