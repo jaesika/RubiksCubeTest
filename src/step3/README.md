@@ -28,18 +28,20 @@
     + 프로그램 종료에 대한 처리
 
 * RubiksCube 클래스
-    + 입력에 대한 파싱 처리
-    + 입력한 명령어에 대한 분기 처리
-    + 큐브 돌리기 명령 처리
-    + 사용자 입력한 숫자만큼 랜덤한 명령어 생성하여 무작위로 섞기
+    + 입력들에 대한 구분하여 명령어 하나 씩 처리
+    + 명령어에 대한 분기 처리
+    + 큐브 돌리기 명령 수행
+    + 사용자 입력한 숫자만큼 랜덤한 명령어 생성하여 무작위로 섞기 
     + 모든 면이 맞는지 확인에 대한 처리
     
 
 * Side 클래스
-    + Cube의 한 면을 구성할 객체 클래스
-    + Side 객체를 회전하는 기능
-    + Side 객체가 모두 같은 컬러인지 체크하는 기능
-    + 상태 출력:　한 면을 출력,　한 줄을 출력<br>
+
+    + RubiksCube의 한 면을 구성할 클래스 `char[3][3] side`
+    + Side 객체를 회전하는 기능 `turn()`
+    + Side 객체가 모두 같은 색인지 체크하는 기능 `isAllright()`
+    + 상태 출력:　한 면을 출력,　한 줄을 출력 `oneSidePrint` `oneLinePrint()`
+     
 
 ## 코드 설명
 #### 사용자 입력
@@ -206,23 +208,9 @@
 ```
 * 사용자가 입력한 숫자 만큼 무작위로 섞어 준다.
 * 입력이 숫자인지 체크를 한다.
-* 입력이 숫자이면 `randomCommand(String input)`을 실행하여 `Random` 객체를 사용하여 `'`를 제외한 명령을 생성하여 새로운 명령구문에
- 붙이게 된다. 또한 `'`는 `Random`객체의 `nextBoolean()`으로 랜덤한 boolean값을 확인하여 명령 구문에 하나씩 랜덤한 확률로 붙여주어 임의의 랜덤한 사용자 명령구문을 만들어 준다.
- #### 정답 체크
- >Side 클래스
-```java
-    public boolean isAllRight() {
-        char color = side[0][0];
-        boolean result = true;
-        for (char[] line : side) {
-            for (char c : line) {
-                if(c!=color) return false;
-            }
-        }
-        return true;
-    }
-```
-* Side 객체가 모두 같은 색으로 이루어져 있는지 체크해준다.
+* 입력이 숫자이면 `randomCommand(String input)`을 실행,　 `Random` 객체를 사용하여 `'`를 제외한 명령을 생성하여 새로운 `result`에
+ 붙이게 된다. 또한 각 명령어 생성시마다 `'`를 랜덤하게 붙혀주는데 `'`는 `Random`객체의 `nextBoolean()`으로 랜덤한 boolean값을 확인하여 랜덤한 명령어 뒤에 하나씩 랜덤한 확률로 붙여주어 임의의 랜덤한 사용자 명령구문을 만들어 주어 `result`를 반환한다.
+ #### 정답 확인
  > RubiksCube 클래스
 ```java
     private boolean isAnswer(Side[] preSides) {
@@ -236,6 +224,20 @@
      }
 ```    
 * 6개의 면을 `isAllRight()` 메서드를 사용하여 체크한다.
+>Side 클래스
+```java
+    public boolean isAllRight() {
+        char color = side[0][0];
+        boolean result = true;
+        for (char[] line : side) {
+            for (char c : line) {
+                if(c!=color) return false;
+            }
+        }
+        return true;
+    }
+```
+* Side 객체가 모두 같은 색으로 이루어져 있는지 체크해준다.
 #### 프로그램 종료
 > RubiksCube 클래스
 ```java
@@ -267,8 +269,8 @@
         return false;
     }
 ```
-* 사용자가 숫자를 입력하여 무작위 섞기를 실행하지 않는 것만 카운트를 하고 정답을 체크하게 된다.
-* 정답이 맞다면 종료 `true` 를 반환하고 축하메시지를 출력 후 RubiksCubeMain 클래스에 전달한다.
+* 사용자가 숫자를 입력하여 `무작위 섞기를 실행하지 않는 것`만 카운트를 하고 정답을 체크하게 된다.
+* 정답이 맞다면 종료 `true` 를 반환하고 축하메시지를 출력 후 `RubiksCubeMain 클래스`에 전달한다.
 > RubiksCubeMain 클래스
 ```java
     private static void isClose(int count, long startTime) {
