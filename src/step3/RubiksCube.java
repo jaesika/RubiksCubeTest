@@ -112,7 +112,9 @@ public class RubiksCube {
     // Number 체크
     private boolean isNumber(String input) {
         try {
-            Integer.parseInt(input);
+            if (Integer.parseInt(input) <= 0) {
+                throw new NumberFormatException();
+            }
             return true;
         } catch (NumberFormatException e) {
             return false;
